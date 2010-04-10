@@ -26,7 +26,7 @@ class IsotopeOrmTest extends PHPUnit_Framework_TestCase {
 	function testInitIsotopeOrm() {
 		$this->assertTrue(class_exists('IsotopeOrm'));
 		
-		$class = new IsotopeOrm();
+		$class = new IsotopeOrm($this->config);
 		$this->assertTrue(is_a($class, 'IsotopeOrm'));
 	}
 	
@@ -41,6 +41,17 @@ class IsotopeOrmTest extends PHPUnit_Framework_TestCase {
 	public function testIsotopeOrmSetConfig() {
 		$orm = new IsotopeOrm();
 		$orm->setConfig(array());
+	}
+	
+	
+	public function testProceduralCreateModelSchema() {
+		$model = $this->orm->createModelSchema('testSchema');
+		$this->assertNotNull($model);
+		$this->assertTrue(is_a($model, 'IsotopeOrmModelSchema'));
+	}
+	
+	public function testCreateExistingModelSchema() {
+		
 	}
 	
 }

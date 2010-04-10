@@ -2,6 +2,11 @@
 
 require_once dirname(__FILE__) . '/IsotopeOrm.php';
 
+/****
+	This is an 'ideal' example of interacting with IsotopeOrm.
+	And so the following code does not work yet.
+****/
+
 
 /**
 	1.) Initialise the ORM
@@ -15,7 +20,24 @@ $datasource = new IsotopeOrm($config);
 
 
 /**
-	1.) Query an existing single-table model
+	2.) Set up a model schema procedurally
+**/
+
+$schema = $datasource->createModelSchema('model_name');
+$schema->addField('name');
+$schema->addField('description', IsotopeOrmSchema::TEXTAREA);
+$schema->createIndex('name');
+
+
+
+##
+## Not implemented yet
+##
+
+
+
+/**
+	XX.) Query an existing single-table model
 **/
 
 $modelName = 'users';
@@ -23,8 +45,9 @@ $users = $datasource->getModel($modelName);
 print_r($users->getUserById(1));
 
 
+
 /**
-	2.) Create a new single table model using a schema
+	XX.) Create a new single table model using a schema
 	    and store an object
 **/
 $schema = $datasource->createModelSchema(
@@ -37,17 +60,10 @@ $schema = $datasource->createModelSchema(
 $newTable = $datasource->createDataModel($schema);
 $newTable->store($newItem);
 
-/**
-	3.) Set up a model schema procedurally
-**/
-
-$schema = $datasource->createModelSchema('model_name');
-$schema->addField('name', 'textField');
-$schema->createIndex('name');
 
 
 /**
-	4.) On the fly data-model creation (using introspection)
+	XX.) On the fly data-model creation (using introspection)
 **/
 
 $newSubscriber = (object) array(
@@ -56,5 +72,7 @@ $newSubscriber = (object) array(
 );
 
 $datasource->storeData('subscriber', $newSubscriber);
+
+
 
 ?>
