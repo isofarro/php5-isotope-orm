@@ -5,10 +5,11 @@ class IsotopeOrmModelSchema {
 	var $schema = NULL;
 	
 	public function __construct($name) {
+		// TODO: add in an changed flag - to help with persisting schemas
 		$this->schema = (object) array(
 			'model'     => $name,
 			'fields'    => array(
-				IsotopeOrmSchema::ID_FIELDNAME    => IsotopeOrmSchema::PRIMARY_KEY
+				IsotopeOrmSchema::ID_FIELDNAME => IsotopeOrmSchema::PRIMARY_KEY
 			),
 			'indexes'   => array(),
 			'subtables' => array()

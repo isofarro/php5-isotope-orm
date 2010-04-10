@@ -24,6 +24,10 @@ class IsotopeOrm {
 		}
 	}
 	
+	public function __destruct() {
+		// TODO: Persist edited schemas
+	}
+	
 	/**
 		setConfig - updates the current configuration with the provided hash
 			Throws an InvalidArgumentException if the passed config isn't an array
@@ -51,7 +55,7 @@ class IsotopeOrm {
 	public function createModelSchema($modelName, $schema=false) {
 		if (empty($this->_dbSchema[$modelName])) {
 			$modelSchema = new IsotopeOrmModelSchema($modelName);
-			// TODO: If the schema exists, process it
+			// TODO: If the schema parameter is passed in, process it
 
 			$this->_dbSchema[$modelName] = $modelSchema;
 			return $modelSchema;

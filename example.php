@@ -19,6 +19,10 @@ $config = (object) array(
 $datasource = new IsotopeOrm($config);
 
 
+##
+## Partially implemented
+##
+
 /**
 	2.) Set up a model schema procedurally
 **/
@@ -26,23 +30,23 @@ $datasource = new IsotopeOrm($config);
 $schema = $datasource->createModelSchema('model_name');
 $schema->addField('name');
 $schema->addField('description', IsotopeOrmSchema::TEXTAREA);
-$schema->createIndex('name');
-
-
-
-##
-## Not implemented yet
-##
-
+$schema->createIndex('name'); // TODO: Implement indexes
 
 
 /**
-	XX.) Query an existing single-table model
+	3.) Query an existing single-table model
 **/
 
 $modelName = 'users';
 $users = $datasource->getModel($modelName);
-print_r($users->getUserById(1));
+print_r($users->getUserById(1)); // TODO: Implement variable functions to query/filter
+
+
+
+##
+## Still to implement
+##
+
 
 
 
