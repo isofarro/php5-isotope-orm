@@ -15,3 +15,23 @@ A flexible schema-based object-model store. This is very much experimental and a
 
 Currently the actual datasource is a PDO-compliant database.
 
+
+Success looks like this:
+
+	$json = <<<JSON
+		{
+			"name":  "Joe Bloggs",
+			"email": "joebloggs@example.com",
+			"communities": [ "buzz", "twitter", "facebook", "yahoo" ]
+		}
+	JSON;
+	
+	$newSubscriber = json_decode();
+	
+	$orm = new IsotopeOrm($ormConfig);
+	$subscribers = $orm->getModel('subscriber');
+	$subscribers->store($newSubscriber);
+	
+	// Later on...
+	$twitterUsers = $subscribers->getSubscribersByCommunities('twitter');
+	// Lists, amongst others, Joe Bloggs
