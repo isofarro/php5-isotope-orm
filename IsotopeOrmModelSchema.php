@@ -7,11 +7,12 @@ class IsotopeOrmModelSchema {
 	public function __construct($name) {
 		$this->name = $name;
 		$this->schema = (object) array(
-			'fields'  => array(
-				IsotopeOrmSchema::ID_FIELDNAME    => IsotopeOrmSchema::PRIMARY_KEY,
-				IsotopeOrmSchema::MODEL_FIELDNAME => $name
+			'model'     => $name,
+			'fields'    => array(
+				IsotopeOrmSchema::ID_FIELDNAME    => IsotopeOrmSchema::PRIMARY_KEY
 			),
-			'indexes' => array()
+			'indexes'   => array(),
+			'subtables' => array()
 		);
 	}
 	
