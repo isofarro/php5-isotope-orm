@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/IsotopeOrmSchema.php';
+require_once dirname(__FILE__) . '/IsotopeOrmModel.php';
 require_once dirname(__FILE__) . '/IsotopeOrmModelSchema.php';
 
 class IsotopeOrm {
@@ -11,7 +12,10 @@ class IsotopeOrm {
 	private $_db = NULL;
 	
 	// Database schema
-	private $_dbSchema = NULL;
+	private $_dbSchema = array();
+	
+	// Database models
+	private $_dbModels = array();
 	
 	
 	public function __construct($config=false) {
@@ -35,7 +39,8 @@ class IsotopeOrm {
 	}
 	
 	/**
-		createModelSchema - creates and returns a new ModelSchema object.
+		createModelSchema - creates and returns a new ModelSchema object. 
+			This method caches ModelSchemas. 
 			Throws an exception if the ModelSchema already exists
 	
 		@param $modelName - a model name (must not currently exist)
@@ -44,17 +49,58 @@ class IsotopeOrm {
 		@returns a new instance of IsotopeOrmModelSchema
 	**/
 	public function createModelSchema($modelName, $schema=false) {
-		if (empty($this->_dbScheme[$modelName])) {
+		if (empty($this->_dbSchema[$modelName])) {
 			$modelSchema = new IsotopeOrmModelSchema($modelName);
 			// TODO: If the schema exists, process it
 
-			$this->_dbScheme[$modelName] = $modelSchema;
+			$this->_dbSchema[$modelName] = $modelSchema;
 			return $modelSchema;
 		} else {
 			throw new InvalidArgumentException('IsotopeOrm Model already exists');
 		}
 	}
 	
+	/**
+		getModelSchema - get the Schema for the specified Model. 
+			This method caches ModelSchemas.
+		
+		@param $modelName - the name of the model
+		
+		@returns an IsotopeOrmModelSchema if the model exists, or false if it doesn't
+	**/
+	public function getModelSchema($modelName) {
+		if (empty($this->_dbSchema[$modelName])) {
+			// TODO: Get the model schema from the datasource
+		} else {
+			return $this->_dbSchema[$modelName];
+		}
+		return false;
+	}
+	
+	
+	/**
+		getModel - get the requested model. 
+			This method caches Models
+		
+		@param $modelName - the name of the model
+		
+		@returns an IsotopeOrmModel if the model exists, or false if it doesn't
+	**/
+	public function getModel($modelName) {
+		if (!empty($this->_dbModels[$modelName])) {
+			return $this->_dbModels[$modelName];
+		} else {
+			$model = new IsotopeOrmModel($modelName);
+			// TODO: Apply the known schema, if one is present
+			$schema = $this->getModelSchema($modelName);
+			if ($schema) {
+				$model->setSchema($schema);
+			}
+			$this->_dbModels[$modelName] = $model;
+			return $model;
+		}
+		return false;
+	}
 	
 }
 
