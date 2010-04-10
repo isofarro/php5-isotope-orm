@@ -30,6 +30,12 @@ class IsotopeOrmModelSchemaTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($ret);
 		//print_r($this->schema->schema);
 	}
+	
+	function testAddPredefinedField() {
+		$ret = $this->schema->addField('description', IsotopeOrmSchema::TEXTAREA);
+		$this->assertTrue($ret);
+		print_r($this->schema->schema);
+	}
 
 	function testAddDuplicateDefaultField() {
 		$ret = $this->schema->addField('field1');
