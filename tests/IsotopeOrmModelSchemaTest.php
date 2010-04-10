@@ -21,10 +21,6 @@ class IsotopeOrmModelSchemaTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_a($class, 'IsotopeOrmModelSchema'));
 	}
 	
-	function testModelSchemaName() {
-		$this->assertEquals($this->schema->name, $this->modelName);
-	}
-	
 	function testAddDefaultField() {
 		$ret = $this->schema->addField('field1');
 		$this->assertTrue($ret);
@@ -34,7 +30,7 @@ class IsotopeOrmModelSchemaTest extends PHPUnit_Framework_TestCase {
 	function testAddPredefinedField() {
 		$ret = $this->schema->addField('description', IsotopeOrmSchema::TEXTAREA);
 		$this->assertTrue($ret);
-		print_r($this->schema->schema);
+		//print_r($this->schema->schema);
 	}
 
 	function testAddDuplicateDefaultField() {
@@ -44,6 +40,30 @@ class IsotopeOrmModelSchemaTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($ret);
 	}
 
+	function testEmptyGetSchema() {
+		$schema = $this->schema->getSchema();
+		
+		$this->assertNotNull($schema);
+		//print_r($schema);
+		
+		$this->assertEquals($this->modelName, $schema->model);
+		$this->assertTrue(is_array($schema->fields));
+		$this->assertTrue(is_array($schema->indexes));
+		$this->assertTrue(is_array($schema->subtables));
+
+
+		$this->assertEquals(1, count($schema->fields));
+		$this->assertEquals(0, count($schema->indexes));
+		$this->assertEquals(0, count($schema->subtables));
+		
+		$this->assertFalse(empty($schema->fields['_id']));
+		$definition = $schema->fields['_id'];
+		$this->assertNotNull($definition);
+		$this->assertTrue(is_string($definition));
+		$this->assertEquals('PRIMARY_KEY', $definition);
+	}
+	
+	
 }
 
 ?>

@@ -1,5 +1,6 @@
 <?php
 
+require_once dirname(__FILE__) . '/IsotopeOrmSchema.php';
 require_once dirname(__FILE__) . '/IsotopeOrmModelSchema.php';
 
 class IsotopeOrm {
@@ -43,10 +44,15 @@ class IsotopeOrm {
 		@returns a new instance of IsotopeOrmModelSchema
 	**/
 	public function createModelSchema($modelName, $schema=false) {
-		// TODO: Check the modelName doesn't exist first.
-		$modelSchema = new IsotopeOrmModelSchema($modelName);
-		// TODO: If the schema exists, process it
-		return $modelSchema;
+		if (empty($this->_dbScheme[$modelName])) {
+			$modelSchema = new IsotopeOrmModelSchema($modelName);
+			// TODO: If the schema exists, process it
+
+			$this->_dbScheme[$modelName] = $modelSchema;
+			return $modelSchema;
+		} else {
+			throw new InvalidArgumentException('IsotopeOrm Model already exists');
+		}
 	}
 	
 	

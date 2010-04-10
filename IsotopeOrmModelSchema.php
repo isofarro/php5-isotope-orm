@@ -1,11 +1,10 @@
 <?php
 
 class IsotopeOrmModelSchema {
-	var $name;
-	var $schema = array();
+	// The schema for this model
+	var $schema = NULL;
 	
 	public function __construct($name) {
-		$this->name = $name;
 		$this->schema = (object) array(
 			'model'     => $name,
 			'fields'    => array(
@@ -34,7 +33,14 @@ class IsotopeOrmModelSchema {
 		return false;
 	}
 	
-	
+	/**
+		getSchema - returns the schema definition of the current Model
+		
+		@returns the model schema data object
+	**/
+	public function getSchema() {
+		return $this->schema;
+	}
 }
 
 ?>
