@@ -50,17 +50,13 @@ class IsotopeOrmTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_a($model, 'IsotopeOrmModelSchema'));
 	}
 	
-	public function testDuplicateCreateModelSchema() {
+	public function testCreateExistingModelSchema() {
 		$model = $this->orm->createModelSchema('testSchema');
 		$this->assertNotNull($model);
 		$this->assertTrue(is_a($model, 'IsotopeOrmModelSchema'));
 
 		$this->setExpectedException('InvalidArgumentException');
 		$model = $this->orm->createModelSchema('testSchema');
-	}
-
-	public function testCreateExistingModelSchema() {
-		
 	}
 	
 }
