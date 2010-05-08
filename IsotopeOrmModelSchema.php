@@ -4,6 +4,9 @@ class IsotopeOrmModelSchema {
 	// The schema for this model
 	var $schema = NULL;
 	
+	// Database reference
+	var $_db;
+	
 	public function __construct($name) {
 		// TODO: add in an changed flag - to help with persisting schemas
 		$this->schema = (object) array(
@@ -34,9 +37,9 @@ class IsotopeOrmModelSchema {
 		return false;
 	}
 	
-	public function addIndex($field, $definition=false) {
+	public function createIndex($fields, $definition=false) {
 		$this->schema->indexes[] = (object)array(
-			$definition ? $definition : IsotopeOrmSchema::INDEX => $field
+			$definition ? $definition : IsotopeOrmSchema::INDEX => $fields
 		);
 		return true;
 	}
@@ -62,11 +65,41 @@ class IsotopeOrmModelSchema {
 			//echo "Standard class schema\n";
 			//print_r($schemaDefinition);
 			$this->_processModelDefinition($schemaDefinition);
+			$this->_createDbTables();
 		} else {
 			echo "Received: ", print_r($schemaDefinition);
 		}
 	}
 	
+	
+	/**
+		_setDbConnection - a non-public method used by IsotopeOrm to pass the
+		current database connection for the class to use
+	**/
+	public function _setDbConnection($db) {
+		$this->_db = $db;
+	}
+
+
+	
+	/**
+		_createDbTables - create database tables defined in the schema
+	**/
+	protected function _createDbTables() {
+		//echo "Creating database tables:\n"; print_r($this->schema);
+		
+		$sql = IsotopeOrmSchema::generateCreateTableSql(
+				$this->schema->model, $this->schema->fields
+		);
+		//echo "SQL: {$sql}\n";
+		$this->_db->exec($sql);
+		
+		if ($this->_db->errorCode() !== '00000') {
+			$info = $this->_db->errorInfo();
+			die('IsotopeOrmModelSchema->_createDbTables: PDO Error: ' . 
+				implode(', ', $info) . "\n");
+		}
+	}
 	
 	/**
 		_processModelDefinition - takes a decoded JSON model and updates the schema with it
@@ -88,22 +121,17 @@ class IsotopeOrmModelSchema {
 		@param $definition - a string containing the field definition
 	**/
 	protected function _processModelField($field, $definition) {
-		if (is_string($definition)) {
-			$definition = $this->_processFieldDefinition($definition);
-		}
+		$this->addField($field, $definition);
+		$defTokens = $this->_processFieldDefinition($definition);
 		
-		foreach($definition as $defToken) {
+		foreach($defTokens as $defToken) {
 			switch($defToken) {
 				case IsotopeOrmSchema::INDEX:
 				case IsotopeOrmSchema::UNIQUE:
-					$this->addIndex($field, $defToken);
+					$this->createIndex($field, $defToken);
 					break;
 				default:
-					$res = $this->addField($field, $defToken);
-					if (!$res) {
-						echo "WARN: {$field}=>{$defToken} not added.\n";
-					}
-				break;
+					break;
 			}
 		}
 	}
@@ -117,6 +145,7 @@ class IsotopeOrmModelSchema {
 	protected function _processFieldDefinition($definitionString) {
 		return explode(' ', $definitionString);
 	}
+	
 
 }
 

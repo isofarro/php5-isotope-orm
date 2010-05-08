@@ -37,6 +37,7 @@ class IsotopeOrm {
 	public function setConfig($config) {
 		if (is_array($config)) {
 			$this->_config = array_merge($this->_config, $config);
+			$this->_initDb();
 		} else {
 			throw new InvalidArgumentException('IsotopeOrm: Invalid Configuration');
 		}
@@ -55,6 +56,7 @@ class IsotopeOrm {
 	public function createModelSchema($modelName, $schemaDef=false) {
 		if (empty($this->_dbSchema[$modelName])) {
 			$modelSchema = new IsotopeOrmModelSchema($modelName);
+			$modelSchema->_setDbConnection($this->_db);
 			
 			// If the schema definition is passed in, process it
 			if ($schemaDef) {
@@ -112,6 +114,26 @@ class IsotopeOrm {
 		return false;
 	}
 	
+	
+	/**
+		_initDb - initialise a PDO database connection (using config datasource)
+	**/
+	protected function _initDb() {
+		if (empty($this->_db)) {
+			// Create a new connection
+			if (empty($this->_config['datasource'])) {
+				die("IsotopeOrm: no datasource configured\n");
+			}
+
+			// Initialise a new database connection and associated schema.
+			$db = new PDO($this->_config['datasource']); 
+
+			// TODO: read in available schemas
+
+			// Database successful, make it ready to use
+			$this->_db = $db;
+		}
+	}
 }
 
 ?>
