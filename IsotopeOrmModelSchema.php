@@ -94,8 +94,8 @@ class IsotopeOrmModelSchema {
 		
 		foreach($definition as $defToken) {
 			switch($defToken) {
-				case 'INDEX':
-				case 'UNIQUE':
+				case IsotopeOrmSchema::INDEX:
+				case IsotopeOrmSchema::UNIQUE:
 					$this->addIndex($field, $defToken);
 					break;
 				default:
