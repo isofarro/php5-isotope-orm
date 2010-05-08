@@ -30,7 +30,6 @@ class IsotopeOrmTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_a($class, 'IsotopeOrm'));
 	}
 	
-	
 	public function testIsotopeOrmSetInvalidConfig() {
 		$orm = new IsotopeOrm();
 		
@@ -40,7 +39,7 @@ class IsotopeOrmTest extends PHPUnit_Framework_TestCase {
 
 	public function testIsotopeOrmSetConfig() {
 		$orm = new IsotopeOrm();
-		$orm->setConfig(array());
+		$orm->setConfig($this->config);
 	}
 	
 	

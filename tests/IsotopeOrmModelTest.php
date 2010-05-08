@@ -34,7 +34,8 @@ class IsotopeOrmModelTest extends PHPUnit_Framework_TestCase {
 	
 	function testModelIsReady() {
 		$this->assertTrue($this->model->isReady());
-		print_r($this->model);
+		echo "TODO: IsotopeOrmModelTest->testModelIsReady()\n";
+		//print_r($this->model);
 	}
 	
 }

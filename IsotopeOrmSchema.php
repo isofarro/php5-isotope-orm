@@ -10,7 +10,7 @@ class IsotopeOrmSchema {
 	const TIMESTAMP   = 'TIMESTAMP';
 	const DATETIME    = 'DATETIME';
 	const URL         = 'URL';
-	
+	const EMAIL       = 'EMAIL';
 	
 	const INDEX       = 'INDEX';
 	const UNIQUE      = 'UNIQUE';
@@ -54,6 +54,7 @@ SQL;
 			switch($token) {
 				case self::TEXTFIELD:
 				case self::URL:
+				case self::EMAIL:
 					$sql['type'] = 'VARCHAR(255)';
 					break;
 				case self::PRIMARY_KEY:
