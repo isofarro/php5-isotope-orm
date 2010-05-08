@@ -48,14 +48,18 @@ class IsotopeOrm {
 			Throws an exception if the ModelSchema already exists
 	
 		@param $modelName - a model name (must not currently exist)
-		@param $schema - an optional schema definition
+		@param $schemaDef - an optional schema definition
 		
 		@returns a new instance of IsotopeOrmModelSchema
 	**/
-	public function createModelSchema($modelName, $schema=false) {
+	public function createModelSchema($modelName, $schemaDef=false) {
 		if (empty($this->_dbSchema[$modelName])) {
 			$modelSchema = new IsotopeOrmModelSchema($modelName);
-			// TODO: If the schema parameter is passed in, process it
+			
+			// If the schema definition is passed in, process it
+			if ($schemaDef) {
+				$modelSchema->setSchema($schemaDef);
+			}
 
 			$this->_dbSchema[$modelName] = $modelSchema;
 			return $modelSchema;
