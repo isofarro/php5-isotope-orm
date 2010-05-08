@@ -28,7 +28,7 @@ class IsotopeOrmModelSchema {
 	public function addField($name, $definition=false) {
 		if (empty($this->schema->fields[$name])) {
 			$this->schema->fields[$name] = 
-				$definition ? $definition : IsotopeOrmSchema::TEXTFIELD;
+				$definition ? $definition : IsotopeOrmSchema::DEFAULT_FIELD;
 			return true;
 		}
 		return false;

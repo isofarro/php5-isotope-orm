@@ -95,11 +95,13 @@ class IsotopeOrm {
 			return $this->_dbModels[$modelName];
 		} else {
 			$model = new IsotopeOrmModel($modelName);
-			// TODO: Apply the known schema, if one is present
+			
+			// Apply the model schema, if there is one defined
 			$schema = $this->getModelSchema($modelName);
 			if ($schema) {
 				$model->setSchema($schema);
 			}
+			
 			$this->_dbModels[$modelName] = $model;
 			return $model;
 		}
