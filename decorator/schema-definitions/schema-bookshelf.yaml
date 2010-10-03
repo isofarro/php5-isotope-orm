@@ -1,0 +1,49 @@
+Entities:
+	Book:
+		title:        BookTitle
+		authors:      
+			entity:    Author
+			relation:  MULTIPLE
+		publications: 
+			entity:    Publication
+			relation:  MULTIPLE
+	
+	Author:
+		name:         PersonName
+		books:        
+			entity:    Book
+			relation:  MULTIPLE
+		picture:      ProfilePicture
+	
+	Publication:
+		date:         PublicationDate
+		isbn:         IsbnNumber
+		book:         
+			entity:    Book
+			relation:  ONE
+		publisher:    
+			entity:    Publisher
+			relation:  MULTIPLE
+
+	Publisher:
+		name:         String
+		publication:
+			entity:    Publication
+			relation:  MULTIPLE
+
+	
+Properties:
+	BookTitle:
+		inherit: String
+
+	IsbnNumber
+		inherit: Number
+	
+	PersonName
+		inherit: String
+
+	ProfilePicture
+		inherit: Image
+		
+	PublicationDate
+		inherit: Date
